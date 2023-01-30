@@ -1,0 +1,64 @@
+{
+   "$schema": "http://json.schemastore.org/template",
+    "author": "Nick Chapsas",
+    "classifications": [
+      "Common",
+      "Adapters",
+      "REST"
+    ],
+    "identity": "My.Custom.Template",
+    "name": "My custom template",
+    "desciption": "This is my special description for my template",
+    "shortName": "pluggabletemplate",
+    "sourceName": "MVP-CustomTemplates",
+    "tags": {
+      "language": "C#",
+      "type": "project"
+    },
+    "preferNameDirectory": true,
+    "symbols": {
+      "IncludeAdapter": {
+        "type": "parameter",
+        "description": "Add Proper Adapter to your Project",
+        "datatype": "choice",
+        "choices": [
+          {
+            "choice": "restwithmongo",
+            "description": "Make REST Application With MongoDb as DataStore"
+          },
+          {
+            "choice": "restwithsql",
+            "description": "Make REST Application With SQL as DataStore"
+          }
+        ],
+        "defaultValue": "restwithmongo",
+        "replaces": "IncludeAdapter"
+      },
+      "RESTWithSQL": {
+        "type": "computed",
+        "value": "(IncludeAdapter == \"restwithsql\")"
+      },
+      "RESTWithMongoDB": {
+        "type": "computed",
+        "value": "(IncludeAdapter == \"restwithmongo\")"
+      }
+  },
+  "sources": [
+    {
+        "modifiers": [
+            {
+                "condition": "(RESTWithMongoDB)",
+                "exclude": [
+                    "src/adapters/SQL.Adapter/**"
+                ]
+            },
+            {
+              "condition": "(RESTWithSQL)",
+              "exclude": [
+                "src/adapters/MongoDB.Adapter/**"
+              ]
+            }
+        ]
+    }
+  ]
+}
